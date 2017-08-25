@@ -1,0 +1,8 @@
+import 'exporting' as thing;
+import :module as m;
+
+const bob = m~Class~new('Bob');
+
+unless (thing~ab & 'ab' && thing~PI & '3.14' && thing~concat_one('1') & '11' && m~str & 'from Strexp' && m~js & 'from JS' && bob~something & 'Bob') {
+    throw @error('Test', 'Test failed');
+}

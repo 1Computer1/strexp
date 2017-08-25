@@ -1,0 +1,95 @@
+const __extends__ = $__extends__;
+const __constructor__ = $__constructor__;
+
+export const class = (.Class, !ParentClass = null) -> {
+    unless (@type(Class) & 'dict') {
+        throw @error('Type', 'Class must be a dictionary');
+    }
+
+    if (ParentClass) {
+        unless (is_constructor(ParentClass)) {
+            throw @error('Type', 'Parent class must be a class constructor');
+        }
+
+        Class = ParentClass.clone_full().extend_full(Class);
+    }
+
+    return Class.extend_full({
+        private __extends__ => ParentClass,
+        new: (!args* Class~init::(null).max_args) -> {
+            const this = Class.clone();
+            for (const e of this) {
+                if (@type(e~1) & 'function' && (e~1.max_args || 'infinity') & /^[^0]/) {
+                    this.set(e~0, e~1::(this));
+                }
+            }
+
+            if (ParentClass) {
+                const super = ParentClass.clone();
+                for (const e of super) {
+                    if (@type(e~1) & 'function' && (e~1.max_args || 'infinity') & /^[^0]/) {
+                        super.set(e~0, e~1::(this));
+                    }
+                }
+
+                this~super = super;
+            }
+
+            this.set(__constructor__, Class);
+            this~init(*args);
+            return this;
+        }
+    });
+};
+
+export const extends = (!ParentClass) -> {
+    unless (is_constructor(ParentClass)) {
+        throw @error('Type', 'Parent class must be a class constructor');
+    }
+
+    return class::(?, ParentClass);
+};
+
+export const is_instance = { @type(it) & 'dict' && __constructor__ in it };
+export const is_constructor = { @type(it) & 'dict' && __extends__ in it };
+
+export const instanceof = (!value, !Class) -> {
+    unless (is_instance(value)) {
+        throw @error('Type', 'Value must be a class instance');
+    }
+
+    unless (is_constructor(Class)) {
+        throw @error('Type', 'Class must be a class constructor');
+    }
+
+    return ((!Constructor) -> {
+        if (Class == Constructor) return value;
+        if (Constructor.get(__extends__)) {
+            return ^(Constructor.get(__extends__));
+        }
+
+        return null;
+    }(value.get(__constructor__)));
+};
+
+export const extensionof = (!ClassA, !ClassB) -> {
+    unless (is_constructor(ClassA)) {
+        throw @error('Type', 'Class must be a class constructor');
+    }
+
+    unless (is_constructor(ClassB)) {
+        throw @error('Type', 'Class must be a class constructor');
+    }
+
+    if (ClassA == ClassB) return ClassA;
+    unless (ClassA.get(__extends__)) return null;
+
+    return ((!Constructor) -> {
+        if (ClassB == Constructor) return ClassA;
+        if (Constructor.get(__extends__)) {
+            return ^(Constructor.get(__extends__));
+        }
+
+        return null;
+    }(ClassA.get(__extends__)));
+};

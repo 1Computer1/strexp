@@ -1,0 +1,65 @@
+export const 0 = '0';
+export const 1 = '1';
+export const 2 = '2';
+export const 3 = '3';
+export const 4 = '4';
+export const 5 = '5';
+export const 6 = '6';
+export const 7 = '7';
+export const 8 = '8';
+export const 9 = '9';
+
+export const is_integer = { @type(it) & 'string' && it & /^(?:0|[1-9][0-9]*)$/ };
+
+export const add = (!lh, !rh) -> {
+    unless (is_integer(lh) && is_integer(rh)) {
+        throw @error('Type', 'Operands must be integers');
+    }
+
+    let fn = (!_* lh) -> null;
+    for (@array(rh)) fn = (!_, !_* fn.max_args) -> null;
+    return fn.max_args;
+};
+
+export const sub = (!lh, !rh) -> {
+    unless (is_integer(lh) && is_integer(rh)) {
+        throw @error('Type', 'Operands must be integers');
+    }
+
+    return ((!_* lh) -> null)::(*@array(rh)).max_args;
+};
+
+export const mul = (!lh, !rh) -> {
+    unless (is_integer(lh) && is_integer(rh)) {
+        throw @error('Type', 'Operands must be integers');
+    }
+
+    let res = '0';
+    for (@array(rh)) {
+        res = add(lh, res);
+    }
+
+    return res;
+};
+
+export const div = (!lh, !rh) -> {
+    unless (is_integer(lh) && is_integer(rh)) {
+        throw @error('Type', 'Operands must be integers');
+    }
+
+    let num = lh;
+
+    let res = '0';
+    loop {
+        try {
+            const val = sub(num, rh);
+            if (val & num) break;
+            num = val;
+            res = add(res, '1');
+        } catch {
+            break;
+        }
+    }
+
+    return res;
+};

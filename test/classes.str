@@ -1,0 +1,24 @@
+import ::classes with class, extends, instanceof, extensionof;
+
+const Person = class <| {
+    init: (!this, !name) -> {
+        this~name = name;
+    },
+    get_name: (!this) -> {
+        return this~name;
+    }
+};
+
+const Student = extends <| Person <| {
+    init: (!this, !name, !grade = 'A') -> {
+        this~super~init(name);
+        this~grade = grade;
+    }
+};
+
+const a = Person~new('Adam');
+const b = Student~new('Bob', 'C');
+
+unless (a~get_name() & 'Adam' && b~get_name && b~grade & 'C' && b <instanceof> Person && Student <extensionof> Person) {
+    throw @error('Test', 'Test failed');
+}

@@ -1,0 +1,66 @@
+const greater_mappings = do {
+    const digits = @array('10', { it });
+    const mappings = {};
+
+    for (const d of @array('10', { it })) {
+        const arr = digits.slice(d);
+        arr.shift();
+        mappings.set(d, arr);
+    }
+
+    return mappings;
+};
+
+const pad = (!str, !amount, !char = '0') -> {
+    const base = @array(amount, char) |> ''.join;
+    const regex = /.{/ - str.length - /}$/;
+
+    if (base & regex) {
+        return base.replace(regex, str);
+    }
+
+    return str;
+};
+
+const compare = (.x, .y) -> {
+    if (x & y) return 'equal';
+
+    x = pad(x, y.length);
+    y = pad(y, x.length);
+
+    if (x~0 & y~0) {
+        return compare(x.slice('1'), y.slice('1'));
+    }
+
+    const greaters = greater_mappings.get(x~0);
+    if (greaters.index({ y~0 & it })) {
+        return 'lesser';
+    }
+
+    return 'greater';
+};
+
+const quicksort = (.array) -> {
+    if (array.length & '0') return [];
+
+    array = array.clone();
+    const pivot = array.pop();
+    const greater = array.filter({ compare(it, pivot) & /greater/ }) |> quicksort;
+    const lesser = array.filter({ compare(it, pivot) & /lesser|equal/ }) |> quicksort;
+
+    return lesser + [pivot] + greater;
+};
+
+const array = @array('20', @random::(/^[1-9][0-9]{0,5}$/));
+const sorted = quicksort(array);
+# @print(sorted);
+
+let prev = sorted~0;
+for (const i: const n of sorted) {
+    if (i & '0') continue;
+    unless (compare(n, prev) & /greater|equal/) {
+        throw @error('Test', 'Test failed');
+    }
+
+    prev = n;
+}

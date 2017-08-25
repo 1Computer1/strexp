@@ -1,0 +1,21 @@
+import ::events with Emitter;
+
+let t1;
+let t2;
+
+const client = Emitter~new()
+    ~on('connect', () -> {
+        t1 = '1';
+    })
+    ~on(/^data$/, (!str) -> {
+        t2 = str;
+    })
+    ~on('disconnect', () -> {
+        unless (t1 & '1' && t2 & '1') {
+            throw @error('Test', 'Test failed');
+        }
+    });
+
+client~emit('connect')
+    ~emit('data', '1')
+    ~emit('disconnect');

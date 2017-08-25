@@ -1,0 +1,51 @@
+const add = (!lh, !rh) -> {
+    const add_one = (.int) -> {
+        if (int & '') int = '0';
+        const digits = int & /^(\d*)(\d)$/;
+
+        if (digits~2 & '9') {
+            return add_one(digits~1) + '0';
+        }
+
+        return digits~1 + digits~2.replace(/./, {
+            0: '1',
+            1: '2',
+            2: '3',
+            3: '4',
+            4: '5',
+            5: '6',
+            6: '7',
+            7: '8',
+            8: '9'
+        });
+    };
+
+    let res = lh;
+    for (@array(rh)) res = add_one(res);
+    return res;
+};
+
+const multiply = (!lh, !rh) -> {
+    let res = '0';
+    for (@array(rh)) res = res <add> lh;
+    return res;
+};
+
+# @print('Input an integer, + or *, then another integer.');
+const input = '12 * 4'; # @input();
+
+const int = /(0|[1-9][0-9]*)/;
+const regex = /^\s*/ + int + /\s*?([+*])\s*?/ + int + /\s*$/;
+
+if (const match of input & regex) {
+    const op = match~2 & '+' ? add : multiply;
+    const res = match~1 <op> match~3;
+    # @print(res);
+
+    unless (res & '48') {
+        throw @error('Test', 'Test failed');
+    }
+} else {
+    # @print('Invalid input!');
+    ...
+}

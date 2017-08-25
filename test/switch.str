@@ -1,0 +1,25 @@
+const x = 'G';
+const text = switch (x) {
+    'A' => '0';
+    *'BCD' | 'E' => '1';
+    /[F-W]/ => {
+        return x + '123';
+    }
+
+    default => {
+        return x + '456';
+    }
+};
+
+const y = '150';
+const text2 = switch {
+    when y & '50' => 'fifty';
+    when y & '100' => 'hundred';
+    when (const foo of y & /1(\d+)/) => {
+        return foo~1;
+    }
+};
+
+unless (text & 'G123' && text2 & '50') {
+    throw @error('Test', 'Test failed');
+}

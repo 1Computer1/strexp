@@ -1,0 +1,54 @@
+import ::classes with class;
+
+export const Emitter = class <| {
+    init: (!this) -> {
+        this~listeners = [];
+    },
+    on: (!this, !event, !listener) -> {
+        unless (@type(event) & /string|regexp/) {
+            throw @error('Type', 'Event name must be a string or a regexp');
+        }
+
+        unless (@type(listener) & 'function') {
+            throw @error('Type', 'Listener must be a function');
+        }
+
+        this~listeners.push([
+            event, listener
+        ]);
+
+        return this;
+    },
+    off: (!this, !event, !listener) -> {
+        unless (@type(event) & /string|regexp/) {
+            throw @error('Type', 'Event name must be a string or a regexp');
+        }
+
+        unless (@type(listener) & 'function') {
+            throw @error('Type', 'Listener must be a function');
+        }
+
+        const index = this~listeners.index((!entry) -> {
+            return entry~0 & event && entry~1 == listener;
+        });
+
+        if (index) {
+            this~listeners.remove(index);
+        }
+
+        return this;
+    },
+    emit: (!this, !event, !args*) -> {
+        unless (@type(event) & /string|regexp/) {
+            throw @error('Type', 'Event name must be a string or a regexp');
+        }
+
+        for (const entry of this~listeners) {
+            if (event & entry~0) {
+                entry~1(*args);
+            }
+        }
+
+        return this;
+    }
+};

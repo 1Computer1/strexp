@@ -1,0 +1,10 @@
+import from ::integers;
+
+const a = 9 <add> 8;
+const b = 8 <sub> 2;
+const c = 4 <mul> 3;
+const d = 9 <div> 2;
+
+unless (a & '17' && b & '6' && c & '12' && d & '4') {
+    throw @error('Test', 'Test failed');
+}

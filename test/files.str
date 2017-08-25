@@ -1,0 +1,11 @@
+import ::fs;
+
+const data = 'Hello world!';
+fs~write_sync('test/test.txt', data);
+
+const data2 = fs~read_sync('test/test.txt');
+fs~delete_sync('test/test.txt');
+
+unless (data2 & 'Hello world!') {
+    throw @error('Test', 'Test failed');
+}

@@ -1,0 +1,15 @@
+export 'a' + 'b' as ab;
+export const number = '3.14' as PI;
+export const concat_one = { it - '1' };
+
+const dict = {
+    x: 'x',
+    y: 'y',
+    ::number
+};
+
+export dict;
+
+unless (number & '3.14' && concat_one('3') & '31') {
+    throw @error('Test', 'Test failed');
+}

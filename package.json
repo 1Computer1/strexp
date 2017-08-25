@@ -1,0 +1,25 @@
+{
+  "name": "strexp",
+  "version": "1.0.0",
+  "description": "An esolang using only strings and regular expressions",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npm run jison && node test/test.js",
+    "jison": "jison src/grammar/strexp.y src/grammar/strexp.l -o src/build/strexp.js"
+  },
+  "bin": {
+    "strexp": "src/index.js"
+  },
+  "author": "1Computer",
+  "license": "MIT",
+  "dependencies": {
+    "jison": "^0.4.17",
+    "minimist": "^1.2.0",
+    "randexp": "^0.4.6",
+    "readline-sync": "^1.4.7",
+    "superagent": "^3.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.4.1"
+  }
+}

@@ -657,7 +657,6 @@ EXPRESSION
     | OR_WEAK
     | CONDITIONAL
     | SWITCH
-    | SWITCH_DECLARE
     | DO
     | THEN
     | VOID

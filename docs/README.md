@@ -4,7 +4,7 @@ Currently more of a list of features than docs.
 Oh well.  
 
 - Data types
-    - string
+    - [string](./types/string.md)
     - regexp
     - match
     - array

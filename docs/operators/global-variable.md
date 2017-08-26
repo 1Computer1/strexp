@@ -6,18 +6,18 @@ All global variables are also accesible via the [global](../stdlib/global.md) st
 
 ## Syntax
 
-```coffeescript
+```
 @ <identifier>
 ```
 
 ## Example
 
-```coffeescript
+```
 # Prints '1'
 @print('1');
 ```
 
-```coffeescript
+```
 # Prints 'array'
 const array = [];
 const type = @type(array);

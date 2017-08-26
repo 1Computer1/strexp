@@ -5,7 +5,7 @@ They are used to declare new variables within a scope.
 
 ## Syntax
 
-```coffeescript
+```
 let <identifier> [= expression];
 const <identifier> = <expression>;
 ```
@@ -18,7 +18,7 @@ Similarly, `!` is a shorthand for `const`.
 All variables are block scoped in Strexp.  
 Which means that variables can only be accessed within their scope or lower.  
 
-```coffeescript
+```
 let x = '10';
 
 if ('1' + '1' & '11') {

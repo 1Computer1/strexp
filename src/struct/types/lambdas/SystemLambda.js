@@ -48,16 +48,19 @@ class SystemLambda extends BaseLambda {
         return new SystemLambda(min, max, (node2, ...args2) => {
             const evaluatedArgs = [];
 
+            args = args.slice(0);
             args2 = args2.slice(0);
-            const len = args.filter(a => a !== undefined).length + args2.length;
 
-            for (let i = 0; i < len; i++) {
-                if (args[i] === undefined) {
-                    evaluatedArgs.push(args2.shift());
+            while (args.length || args2.length) {
+                const arg = args.shift();
+
+                if (arg === undefined) {
+                    const arg2 = args2.shift();
+                    if (arg2 !== undefined) evaluatedArgs.push(arg2);
                     continue;
                 }
 
-                evaluatedArgs.push(args[i]);
+                evaluatedArgs.push(arg);
             }
 
             return this.call(node2, evaluatedArgs);
